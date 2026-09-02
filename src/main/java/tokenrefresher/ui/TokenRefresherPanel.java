@@ -93,7 +93,7 @@ public class TokenRefresherPanel extends JPanel {
                 String result = handler.refreshNow(p);
                 registry.fireChanged();
                 SwingUtilities.invokeLater(() ->
-                        JOptionPane.showMessageDialog(this, result, I18n.t("panel.refreshPopupTitle", p.getName()),
+                        JOptionPane.showMessageDialog(api.userInterface().swingUtils().suiteFrame(), result, I18n.t("panel.refreshPopupTitle", p.getName()),
                                 p.getLastError() != null ? JOptionPane.WARNING_MESSAGE : JOptionPane.INFORMATION_MESSAGE));
             }, "token-refresher-manual-refresh").start();
         }));
@@ -117,7 +117,7 @@ public class TokenRefresherPanel extends JPanel {
         pane.setCaretPosition(0);
         JScrollPane scroll = new JScrollPane(pane);
         scroll.setPreferredSize(new Dimension(640, 520));
-        JOptionPane.showMessageDialog(this, scroll, I18n.t("help.title"), JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(api.userInterface().swingUtils().suiteFrame(), scroll, I18n.t("help.title"), JOptionPane.PLAIN_MESSAGE);
     }
 
     private void applyLanguageTexts() {
@@ -138,7 +138,7 @@ public class TokenRefresherPanel extends JPanel {
     }
 
     private void confirmDelete(TokenProfile p) {
-        int result = JOptionPane.showConfirmDialog(this,
+        int result = JOptionPane.showConfirmDialog(api.userInterface().swingUtils().suiteFrame(),
                 I18n.t("panel.confirmDeleteMsg", p.getName()), I18n.t("panel.confirmTitle"), JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             registry.remove(p);
@@ -146,7 +146,7 @@ public class TokenRefresherPanel extends JPanel {
     }
 
     public void openEditor(TokenProfile profile, boolean isNew) {
-        ProfileEditorDialog dialog = new ProfileEditorDialog(api, SwingUtilities.getWindowAncestor(this), profile, saved -> {
+        ProfileEditorDialog dialog = new ProfileEditorDialog(api, api.userInterface().swingUtils().suiteFrame(), profile, saved -> {
             if (isNew) {
                 registry.add(saved);
             } else {

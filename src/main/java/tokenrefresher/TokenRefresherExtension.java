@@ -32,6 +32,11 @@ public class TokenRefresherExtension implements BurpExtension {
         api.userInterface().registerSuiteTab(I18n.t("tab.title"), panel);
         api.userInterface().registerContextMenuItemsProvider(new RegisterLoginMenu(api, registry, panel));
 
+        api.extension().registerUnloadingHandler(() -> {
+            handler.shutdown();
+            api.logging().logToOutput(I18n.t("ext.unloaded"));
+        });
+
         api.logging().logToOutput(I18n.t("ext.loaded", registry.all().size()));
     }
 }

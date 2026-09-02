@@ -53,6 +53,9 @@ public final class I18n {
         add("ext.loaded", "Token Auto-Refresher yüklendi. %d profil bulundu.",
                 "Token Auto-Refresher loaded. %d profile(s) found.",
                 "Token Auto-Refresher chargé. %d profil(s) trouvé(s).");
+        add("ext.unloaded", "Token Auto-Refresher kaldırıldı, arka plan işlemleri durduruldu.",
+                "Token Auto-Refresher unloaded, background activity stopped.",
+                "Token Auto-Refresher déchargé, activité en arrière-plan arrêtée.");
         add("tab.title", "Token Refresher", "Token Refresher", "Token Refresher");
 
         add("panel.btnAdd", "Ekle", "Add", "Ajouter");

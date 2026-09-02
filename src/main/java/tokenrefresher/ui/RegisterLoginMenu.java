@@ -43,7 +43,7 @@ public class RegisterLoginMenu implements ContextMenuItemsProvider {
             }
             p.setLoginRequest(capturedRequest);
             ProfileEditorDialog dialog = new ProfileEditorDialog(
-                    api, SwingUtilities.getWindowAncestor(panel), p, registry::add);
+                    api, api.userInterface().swingUtils().suiteFrame(), p, registry::add);
             dialog.setVisible(true);
         });
         return List.of(item);

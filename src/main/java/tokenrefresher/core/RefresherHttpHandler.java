@@ -24,15 +24,20 @@ public class RefresherHttpHandler implements HttpHandler {
     private final MontoyaApi api;
     private final ProfileRegistry registry;
     private final ThreadLocal<Boolean> inFlightMacroCall = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private volatile boolean unloaded = false;
 
     public RefresherHttpHandler(MontoyaApi api, ProfileRegistry registry) {
         this.api = api;
         this.registry = registry;
     }
 
+    public void shutdown() {
+        unloaded = true;
+    }
+
     @Override
     public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent requestToBeSent) {
-        if (inFlightMacroCall.get()) {
+        if (unloaded || inFlightMacroCall.get()) {
             
             return RequestToBeSentAction.continueWith(requestToBeSent);
         }
@@ -71,7 +76,7 @@ public class RefresherHttpHandler implements HttpHandler {
 
     @Override
     public ResponseReceivedAction handleHttpResponseReceived(HttpResponseReceived responseReceived) {
-        if (inFlightMacroCall.get()) {
+        if (unloaded || inFlightMacroCall.get()) {
             return ResponseReceivedAction.continueWith(responseReceived);
         }
 
@@ -142,6 +147,9 @@ public class RefresherHttpHandler implements HttpHandler {
     }
 
     private synchronized void doRefresh(TokenProfile p) {
+        if (unloaded) {
+            return;
+        }
         HttpRequest loginRequest = p.getLoginRequest();
         if (loginRequest == null) {
             p.setLastError(I18n.t("err.noLoginRequest"));
