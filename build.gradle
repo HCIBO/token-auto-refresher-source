@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '9.6.1'
+}
+
+group = 'com.hamit.tokenrefresher'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'net.portswigger.burp.extensions:montoya-api:2026.7'
+    implementation 'com.google.code.gson:gson:2.11.0'
+}
+
+shadowJar {
+    archiveBaseName.set('token-auto-refresher')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+    manifest {
+        attributes 'Main-Class': 'tokenrefresher.TokenRefresherExtension'
+    }
+}
+
+build {
+    dependsOn shadowJar
+}

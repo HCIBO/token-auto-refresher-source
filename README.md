@@ -26,7 +26,7 @@ Uses Montoya's `HttpHandler` to intercept every outgoing request from every Burp
 ## Project layout
 
 ```
-src/tokenrefresher/
+src/main/java/tokenrefresher/
   TokenRefresherExtension.java   entry point (implements BurpExtension)
   core/                          HttpHandler, extraction, JWT exp decoding
   model/                         TokenProfile / TokenRule / enums
@@ -37,13 +37,13 @@ src/tokenrefresher/
 
 ## Build
 
-No Gradle/Maven wrapper included — plain JDK 17+ and `javac`/`jar`. `montoya-api` and `gson` are pulled from Maven Central:
+Gradle (wrapper included, no local Gradle install needed) — just JDK 17+:
 
 ```bash
-./build.sh
+./gradlew shadowJar
 ```
 
-Produces `dist/token-auto-refresher.jar`, loadable directly via Burp → Extensions → Add → Java.
+`montoya-api` (`compileOnly`, provided by Burp at runtime) and `gson` (bundled) are pulled from Maven Central automatically. Produces `build/libs/token-auto-refresher.jar`, loadable directly via Burp → Extensions → Add → Java.
 
 ## Screenshots
 
