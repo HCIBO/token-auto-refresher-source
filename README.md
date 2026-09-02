@@ -47,7 +47,30 @@ Gradle (wrapper included, no local Gradle install needed) — just JDK 17+:
 
 ## Screenshots
 
-![Main tab](screenshots/login4.png)
-![Profile editor](screenshots/login3.png)
+First, look at your login (token-generating) request and figure out where in the response the token value actually lives — the extension supports every common location. In our example, the response returns it as a session field inside the JSON body.
+
+Right-click that request and select Extensions → Token Auto-Refresher to hand it over to the extension.
+
 ![Login response](screenshots/login1.png)
+
+The Token Profile window opens. Profile name can be anything you like.
+
+In Extract from, pick where the token value is — since ours is in the JSON body, we select JSON path, and in Path/name we give the token's parameter name.
+
+Next, Inject into — this tells the extension where the token goes in outgoing requests. In our example it's stored in a Cookie named session. If it were a JWT instead, we'd put Authorization in the Name field and Bearer in Prefix. Sometimes there's no prefix at all — in that case just enter Authorization and leave Prefix empty.
+
+Once that's set, click Save.
+
+![Profile editor](screenshots/login3.png)
+
+Back on the Token Refresher screen, click Refresh now and the token kicks in. From this point on, Proxy, Repeater, Intruder, Scanner and Extensions — whichever you've enabled — automatically continue every request with the fresh token. No manual swapping needed, ever.
+
+The UI is available in English, French and Turkish if you'd like to switch.
+
+Note: if a request needs more than one header/value, add extra rows with Add rule. If you want a brand-new token fetched on every single request, enable the Force-refresh option.
+
+![Main tab](screenshots/login4.png)
+
+Now, whether you send a request or run a Scanner scan, the process will continue seamlessly with the new token.
+
 ![Injected into a later request](screenshots/login2.png)
